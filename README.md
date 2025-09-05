@@ -83,7 +83,7 @@ The backend is designed for reliability, extensibility, and observability.
 cd backend
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
+cp .env.example.example .env.example
 uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 ```
 - For real Reddit login:  
@@ -95,7 +95,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000 --reload
 
 ```bash
 docker build -t reddit-outreach-backend ./backend
-docker run -p 8000:8000 --env-file ./backend/.env reddit-outreach-backend
+docker run -p 8000:8000 --env-file ./backend/.env.example reddit-outreach-backend
 ```
 Or use docker-compose:
 
@@ -104,7 +104,7 @@ version: "3.8"
 services:
   backend:
     build: backend
-    env_file: ./backend/.env
+    env_file: backend/.env.example
     ports: [ "8000:8000" ]
 ```
 
