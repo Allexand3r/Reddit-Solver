@@ -12,7 +12,7 @@ from scraper import collect_active_users
 from ai import generate_suggestions
 from metrics import prometheus_response, REQUEST_LATENCY, MESSAGES_COUNTER, ONLINE_USERS_GAUGE, RECONNECTS
 
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env.example"), override=False)
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "example.virtual"), override=False)
 
 app = FastAPI(title="Reddit Outreach Backend")
 

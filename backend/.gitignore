@@ -69,7 +69,7 @@ venv.bak/
 *.log
 
 # dotenv
-.env.example
+example.virtual
 .env.*.local
 
 # mypy

@@ -2,6 +2,6 @@ version: "3.8"
 services:
   backend:
     build: backend
-    env_file: backend/.env.example
+    env_file: backend/example.virtual
     ports:
       - "8000:8000"
