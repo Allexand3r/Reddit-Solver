@@ -35,6 +35,7 @@ def metrics():
     data, code, headers = prometheus_response()
     return PlainTextResponse(data, status_code=code, headers=headers)
 
+
 @app.get("/health", response_model=HealthResponse)
 def health():
     cookies = get_session_cookies() or {}
@@ -45,12 +46,25 @@ def health():
         cookie_names=list(cookies.keys())
     )
 
+
 @app.post("/login")
 def login(req: LoginRequest):
     if DRY_RUN:
         set_session_cookies({"reddit_session": "dry-run-cookie"})
         return {"ok": True, "dry_run": True}
-    res = reddit_login(req.username, req.password, req.otp, PROXIES)
+
+    proxy_requests = None
+    if req.proxies:
+        proxy_requests = [proxy.dict() for proxy in req.proxies]
+
+    res = reddit_login(
+        req.username,
+        req.password,
+        req.otp,
+        proxy_requests,
+        req.proxy_rotation_mode,
+    )
+
     if not res.get("ok"):
         raise HTTPException(status_code=400, detail=res)
     return res

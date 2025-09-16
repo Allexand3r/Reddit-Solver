@@ -7,3 +7,5 @@ cryptography==42.0.5
 redis==5.0.4
 prometheus-client==0.20.0
 python-dotenv==1.0.1
+requests[socks]>=2.28.0
+

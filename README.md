@@ -52,10 +52,36 @@ The backend is designed for reliability, extensibility, and observability.
 
 ### 4. Proxy Management
 
-- Supports 2–3 proxies (SOCKS5/HTTP) via environment variables; you can use public or private proxies.
-- Proxies are automatically used for login and scraping when enabled.
+- **Supported Proxy Types:**
+  - **HTTP** – Standard HTTP proxies.
+  - **HTTPS** – Secure HTTP proxies.
+  - **SOCKS5** – SOCKS5 proxies with authentication support.
 
----
+- **Proxy Rotation Modes:**
+  - **Sequential:**  
+    Proxies are used in order, cycling through the list:
+    ```
+    Request 1 → Proxy 1
+    Request 2 → Proxy 2
+    Request 3 → Proxy 3
+    Request 4 → Proxy 1 (cycle repeats)
+    ```
+  - **Random:**  
+    A random proxy is selected for each request:
+    ```
+    Request 1 → Proxy 2 (random)
+    Request 2 → Proxy 1 (random)
+    Request 3 → Proxy 2 (random, may repeat)
+    ```
+  - **First Working:**  
+    Tests all proxies and uses the first one that works for all requests:
+    ```
+    Test Proxy 1 → Failed
+    Test Proxy 2 → Success ✓
+    Use Proxy 2 for all requests
+    ```
+
+- Proxies are automatically applied for login and scraping when enabled through environment variables.
 
 ### 5. Observability
 
@@ -140,3 +166,29 @@ The reference implementation uses keyword-matching templates for quick, relevant
 For production, it is recommended to integrate with an AI API or local ML model for richer personalization.
 
 ---
+
+
+**Login Request Example:**
+
+```jsonc
+{
+  "username": "your_reddit_username",
+  "password": "your_reddit_password",
+  "otp": "123456",
+  "proxies": [
+    {
+      "host": "socks5.example.com",
+      "port": 1080,
+      "username": "proxy_user",
+      "password": "proxy_pass",
+      "proxy_type": "socks5"
+    },
+    {
+      "host": "http.example.com",
+      "port": 8080,
+      "proxy_type": "http"
+    }
+  ],
+  "proxy_rotation_mode": "random",
+}
+

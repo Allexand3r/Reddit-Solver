@@ -1,11 +1,28 @@
+from enum import Enum
+
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime
+
+
+class ProxyRotationMode(str, Enum):
+    SEQUENTIAL = "sequential"  # proxy by proxy
+    RANDOM = "random"         # random
+    FIRST_WORKING = "first_working"  # first_working
+
+class ProxyRequest(BaseModel):
+    host: str
+    port: int
+    username: Optional[str] = None
+    password: Optional[str] = None
+    proxy_type: Optional[str] = "http"  # http, https, socks5
 
 class LoginRequest(BaseModel):
     username: str
     password: str
     otp: Optional[str] = None
+    proxies: Optional[List[ProxyRequest]] = None
+    proxy_rotation_mode: Optional[ProxyRotationMode] = ProxyRotationMode.SEQUENTIAL
 
 class HealthResponse(BaseModel):
     logged_in: bool
